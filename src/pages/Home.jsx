@@ -15,11 +15,13 @@ const Home = () => {
   useEffect(() => {
     const loadFAQs = async () => {
       try {
+        setLoading(true);
         const data = await getFAQs(language);
         setFaqs(data);
         setError(null);
       } catch (err) {
         setError('Failed to load FAQs. Please try again later.');
+        console.error('Fetch error:', err);
       } finally {
         setLoading(false);
       }

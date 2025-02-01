@@ -1,6 +1,6 @@
 // src/components/LanguageSwitcher.jsx
 import { useContext } from "react";
-import { LanguageContext } from "../contexts/LanguageContext";
+import { LanguageContext, supportedLanguages } from "../contexts/LanguageContext";
 
 const LanguageSwitcher = () => {
   const { language, setLanguage } = useContext(LanguageContext);
@@ -9,11 +9,11 @@ const LanguageSwitcher = () => {
     <select
       value={language}
       onChange={(e) => setLanguage(e.target.value)}
-      className="p-2 border rounded"
+      className="p-2 border rounded bg-white"
     >
-      <option value="en">English</option>
-      <option value="hi">Hindi</option>
-      <option value="bn">Bengali</option>
+      {Object.entries(supportedLanguages).map(([code, name]) => (
+        <option key={code} value={code}>{name}</option>
+      ))}
     </select>
   );
 };
