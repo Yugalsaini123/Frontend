@@ -1,0 +1,14 @@
+# docker-compose.yml
+version: '3.8'
+
+services:
+  faq-frontend:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - VITE_API_URL=http://localhost:5000/api  # Update this with your actual API URL
+    volumes:
+      - ./src:/app/src
+    container_name: faq-frontend
