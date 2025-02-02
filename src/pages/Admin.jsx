@@ -2,12 +2,11 @@
 import React, { useState } from "react";
 import RichTextEditor from "../components/RichTextEditor";
 import { createFAQ } from "../services/api";
+import Navbar from "../components/Navbar";
+import "../styles.css";
 
-const Admin = () => {
-  const [formData, setFormData] = useState({
-    question: '',
-    answer: '',
-  });
+export const Admin = () => {
+  const [formData, setFormData] = useState({ question: '', answer: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
@@ -31,56 +30,59 @@ const Admin = () => {
   };
 
   return (
-    <div className="container mx-auto p-4 max-w-2xl">
-      <h1 className="text-3xl font-bold mb-6 text-gray-800">FAQ Management</h1>
-      
-      {success && (
-        <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
-          FAQ created successfully!
-        </div>
-      )}
+    <div>
+      <Navbar />
+      <main className="container">
+        <div style={{ maxWidth: '800px', margin: '2rem auto', padding: '2rem', backgroundColor: 'white', borderRadius: '0.75rem', boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)' }}>
+          <h1 style={{ fontSize: '2rem', fontWeight: 'bold', color: 'var(--text-dark)', marginBottom: '2rem' }}>
+            FAQ Management
+          </h1>
 
-      {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-          {error}
-        </div>
-      )}
+          {success && (
+            <div className="alert alert-success">FAQ created successfully!</div>
+          )}
 
-      <form onSubmit={handleSubmit} className="space-y-6 bg-white p-6 rounded-lg shadow-md">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Question
-          </label>
-          <input
-            type="text"
-            value={formData.question}
-            onChange={(e) => setFormData({ ...formData, question: e.target.value })}
-            className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            disabled={isSubmitting}
-            required
-          />
-        </div>
+          {error && (
+            <div className="alert alert-error">{error}</div>
+          )}
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Answer
-          </label>
-          <RichTextEditor
-            value={formData.answer}
-            onChange={(content) => setFormData({ ...formData, answer: content })}
-          />
-        </div>
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label className="form-label">Question</label>
+              <input
+                type="text"
+                value={formData.question}
+                onChange={(e) => setFormData({ ...formData, question: e.target.value })}
+                className="form-input"
+                disabled={isSubmitting}
+                required
+              />
+            </div>
 
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors disabled:opacity-50"
-          disabled={isSubmitting}
-        >
-          {isSubmitting ? 'Creating...' : 'Create FAQ'}
-        </button>
-      </form>
+            <div className="form-group">
+              <label className="form-label">Answer</label>
+              <div className="editor-container">
+                <RichTextEditor
+                  value={formData.answer}
+                  onChange={(content) => setFormData({ ...formData, answer: content })}
+                />
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              className="button button-primary"
+              style={{ width: '100%' }}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? 'Creating...' : 'Create FAQ'}
+            </button>
+          </form>
+        </div>
+      </main>
     </div>
   );
 };
+
 
 export default Admin;

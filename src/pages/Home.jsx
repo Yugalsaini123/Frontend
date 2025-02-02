@@ -5,8 +5,11 @@ import LanguageSwitcher from '../components/LanguageSwitcher';
 import { LanguageContext } from '../contexts/LanguageContext';
 import { getFAQs } from '../services/api';
 import ErrorBoundary from '../components/ErrorBoundary';
+import Navbar from '../components/Navbar';
+import "../styles.css";
 
-const Home = () => {
+
+export const Home = () => {
   const { language } = useContext(LanguageContext);
   const [faqs, setFaqs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -21,7 +24,6 @@ const Home = () => {
         setError(null);
       } catch (err) {
         setError('Failed to load FAQs. Please try again later.');
-        console.error('Fetch error:', err);
       } finally {
         setLoading(false);
       }
@@ -29,26 +31,25 @@ const Home = () => {
     loadFAQs();
   }, [language]);
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500" />
-      </div>
-    );
-  }
-
   return (
-    <ErrorBoundary>
-      <div className="container mx-auto p-4">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold">FAQs</h1>
+    <div>
+      <Navbar />
+      <main className="container">
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+          <h1 style={{ fontSize: '2rem', fontWeight: 'bold', color: 'var(--text-dark)' }}>
+            Frequently Asked Questions
+          </h1>
           <LanguageSwitcher />
         </div>
-        
-        {error ? (
-          <div className="text-center text-red-500 p-4">{error}</div>
+
+        {loading ? (
+          <div style={{ display: 'flex', justifyContent: 'center', padding: '4rem' }}>
+            <div className="spinner" />
+          </div>
+        ) : error ? (
+          <div className="alert alert-error">{error}</div>
         ) : faqs.length > 0 ? (
-          <div className="space-y-4">
+          <div>
             {faqs.map((faq) => (
               <FAQCard
                 key={faq._id}
@@ -58,11 +59,16 @@ const Home = () => {
             ))}
           </div>
         ) : (
-          <p className="text-center text-gray-500">No FAQs available.</p>
+          <div style={{ textAlign: 'center', padding: '3rem' }}>
+            <p style={{ color: 'var(--text-light)', fontSize: '1.125rem' }}>
+              No FAQs found. Check back later!
+            </p>
+          </div>
         )}
-      </div>
-    </ErrorBoundary>
+      </main>
+    </div>
   );
 };
+
 
 export default Home;

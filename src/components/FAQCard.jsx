@@ -1,11 +1,15 @@
 // src/components/FAQCard.jsx
-const FAQCard = ({ question, answer }) => {
-    return (
-      <div className="bg-white p-6 rounded-lg shadow-md mb-4">
-        <h3 className="text-xl font-bold mb-2">{question}</h3>
-        <p className="text-gray-700">{answer}</p>
-      </div>
-    );
-  };
-  
-  export default FAQCard;
+import "../styles.css";
+export const FAQCard = ({ question, answer }) => {
+  return (
+    <div className="faq-card">
+      <h3 className="faq-question">{question}</h3>
+      <div 
+        className="faq-answer"
+        dangerouslySetInnerHTML={{ __html: answer }}
+      />
+    </div>
+  );
+};
+
+export default FAQCard;
